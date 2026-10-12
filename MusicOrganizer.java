@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * A class to hold details of audio tracks.
@@ -171,21 +172,58 @@ public class MusicOrganizer
             addTrack(track);
         }
     }
-    
-    public void playRandomTrack()
-    {
-        if(tracks.size()>0){
-            int index = random.nextint(tracks.size());
-            System.out.println("Random pick: track" + index); 
+    public void playRandomTrack() {
+       if(tracks.size() > 0) {
+            // nextInt(n) returns a whole number from 0 up to n - 1.
+            // The valid index numbers of the list are ALSO 0 up to
+            // size - 1, so the number we get is always a valid index.
+            int index = random.nextInt(tracks.size());
+            System.out.println("Random pick: track " + index);
+            // playTrack already checks the index and prints "Now playing".
             playTrack(index);
         }
-        else{
+        else {
             System.out.println("There are no tracks to play.");
         }
-            
+    } 
+    
+    public void playAllShuffled()
+    {
+        if(tracks.size() > 0) {
+            // Make a COPY of the track list. We pull tracks out of the
+            // copy as they are played, so the original list stays whole.
+            ArrayList<Track> remaining = new ArrayList<>(tracks);
+            int total = remaining.size();
+            int played = 0;
+// Keep going until nothing is left in the copy.
+            while(remaining.size() > 0) {
+                // Pick one of the tracks that has NOT been played yet.
+                int index = random.nextInt(remaining.size());
+                Track track = remaining.get(index);
+                // Take it out of the copy so it cannot be picked again.
+                remaining.remove(index);
+                played++;
+                System.out.println("Now playing " + played + " of " + total
+                                   + ": " + track.getArtist()
+                                   + " - " + track.getTitle());
+                // playSample waits until the sample has finished,
+                // so the tracks play one after the other, not all at once.
+                player.playSample(track.getFilename());
+            }
+            System.out.println("Shuffle finished. "
+                               + "Every track was played once.");
         }
-        
-        
-        
+        else {
+            System.out.println("There are no tracks to play.");
+        }
+    }
 }
-}
+ 
+    
+
+        
+        
+        
+
+
+
