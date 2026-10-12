@@ -15,7 +15,7 @@ public class MusicOrganizer
     private MusicPlayer player;
     // A reader that can read music files and load them as tracks.
     private TrackReader reader;
-
+    private Random random;
     /**
      * Create a MusicOrganizer
      */
@@ -24,6 +24,7 @@ public class MusicOrganizer
         tracks = new ArrayList<>();
         player = new MusicPlayer();
         reader = new TrackReader();
+        random = new Random();
         readLibrary("../audio");
         System.out.println("Music library loaded. " + getNumberOfTracks() + " tracks.");
         System.out.println();
@@ -170,4 +171,21 @@ public class MusicOrganizer
             addTrack(track);
         }
     }
+    
+    public void playRandomTrack()
+    {
+        if(tracks.size()>0){
+            int index = random.nextint(tracks.size());
+            System.out.println("Random pick: track" + index); 
+            playTrack(index);
+        }
+        else{
+            System.out.println("There are no tracks to play.");
+        }
+            
+        }
+        
+        
+        
+}
 }
